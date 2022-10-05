@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { todosSlice } from '~/redux/todosSlice';
+import { todosSlice } from '~/redux/slice/todosSlice';
 
 function Header() {
     const [todoInput, setTodoInput] = useState('');
@@ -10,12 +10,13 @@ function Header() {
     const dispatch = useDispatch();
 
     const handleInput = (e) => {
+        if (e.target.value.startsWith(' ')) return;
         setTodoInput(e.target.value);
     };
 
     const handleSubmit = (e) => {
+        if (!e.target.value.trim()) return;
         if (e.keyCode === 13) {
-            console.log(todoInput);
             dispatch(
                 todosSlice.actions.addTodo({
                     id: uuidv4(),
