@@ -15,8 +15,9 @@ function Footer() {
     const todosCompleted = useMemo(() => todos.filter((todo) => todo.completed).length, [todos]);
     const todosActive = useMemo(() => todos.filter((todo) => !todo.completed).length, [todos]);
 
-    const handleChangeFilters = (filter) => {
-        dispatch(filtersSlice.actions.setFilter({ filter: filter }));
+    const handleChangeFilters = (e, filter) => {
+        e.preventDefault();
+        dispatch(filtersSlice.actions.setStatus({ filter: filter }));
     };
 
     const handleClearCompleted = () => {
@@ -34,9 +35,9 @@ function Footer() {
                         {allFilters.map((filter, index) => (
                             <li key={index}>
                                 <a
-                                    href="/#"
+                                    href="/"
                                     className={filters.status === filter ? 'selected' : ''}
-                                    onClick={() => handleChangeFilters(filter)}
+                                    onClick={(e) => handleChangeFilters(e, filter)}
                                 >
                                     {filter[0].toUpperCase() + filter.slice(1)}
                                 </a>

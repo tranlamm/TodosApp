@@ -1,4 +1,5 @@
 {
+    "homepage": "https://tranlamm.github.io/todos-app",
     "name": "todos-app",
     "version": "0.1.0",
     "private": true,
@@ -20,10 +21,13 @@
     "devDependencies": {
         "babel-plugin-module-resolver": "^4.1.0",
         "customize-cra": "^1.0.0",
+        "gh-pages": "^4.0.0",
         "react-app-rewired": "^2.2.1",
         "sass": "^1.55.0"
     },
     "scripts": {
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
