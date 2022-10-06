@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
@@ -7,9 +7,18 @@ import { todosSlice } from '~/redux/slice/todosSlice';
 
 function Main() {
     const [editValue, setEditValue] = useState('');
+    const [inputRefIndex, setInputRefIndex] = useState(-1);
+    const inputRef = useRef([]);
     const todos = useSelector(todosRemainSelector);
     const editId = useSelector(editingSelector);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (inputRefIndex > -1) {
+            inputRef.current[inputRefIndex].focus();
+            setInputRefIndex(-1);
+        }
+    }, [inputRefIndex]);
 
     const handleEditValue = (e) => {
         setEditValue(e.target.value);
@@ -23,7 +32,8 @@ function Main() {
         dispatch(todosSlice.actions.delete({ id: id }));
     };
 
-    const handleStartEditing = (id) => {
+    const handleStartEditing = (id, index) => {
+        setInputRefIndex(index);
         dispatch(todosSlice.actions.setEditId({ id: id }));
     };
 
@@ -71,10 +81,11 @@ function Main() {
                                 onChange={() => handleToggleCheck(todo.id)}
                                 checked={todo.completed}
                             />
-                            <label onDoubleClick={() => handleStartEditing(todo.id)}>{todo.name}</label>
+                            <label onDoubleClick={() => handleStartEditing(todo.id, index)}>{todo.name}</label>
                             <button className="destroy" onClick={() => handleDelete(todo.id)}></button>
                         </div>
                         <input
+                            ref={(el) => (inputRef.current[index] = el)}
                             className="edit"
                             value={editValue}
                             onChange={handleEditValue}
